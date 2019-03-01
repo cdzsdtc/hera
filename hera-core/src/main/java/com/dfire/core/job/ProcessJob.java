@@ -11,6 +11,7 @@ import com.dfire.logs.TaskLog;
 import java.io.*;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
@@ -29,7 +30,7 @@ public abstract class ProcessJob extends AbstractJob implements Job {
 
     public ProcessJob(JobContext jobContext) {
         super(jobContext);
-        envMap = HeraGlobalEnvironment.userEnvMap;
+        envMap = new HashMap<>(HeraGlobalEnvironment.userEnvMap);
     }
 
     /**

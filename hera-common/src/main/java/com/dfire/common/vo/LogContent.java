@@ -35,6 +35,7 @@ public class LogContent {
             if (StringUtils.isBlank(log)) {
                 return ;
             }
+            lines++;
             if (log.toLowerCase().contains(ERROR)
                     || log.toLowerCase().contains(StatusEnum.FAILED.toString())
                     || log.contains("Exception")
@@ -48,28 +49,26 @@ public class LogContent {
             } else {
                 content.append(CONSOLE).append(log).append(Constants.LOG_SPLIT);
             }
-            if (++lines >= COUNT) {
+            if (lines == COUNT) {
                 content.append(HERA).append("控制台输出信息过多，停止记录，建议您优化自己的Job");
             }
         }
     }
 
     public void appendHera(String log) {
-        lines++;
         if (content == null) {
             content = new StringBuffer();
         }
-        if (lines < COUNT) {
+        if (++lines < COUNT) {
             content.append(HERA).append(log).append(Constants.LOG_SPLIT);
         }
     }
 
     public void append(String log) {
-        lines++;
         if (content == null) {
             content = new StringBuffer();
         }
-        if (lines < COUNT) {
+        if (++lines < COUNT) {
             content.append(HERA).append(log).append(Constants.LOG_SPLIT);
         }
     }
