@@ -62,7 +62,7 @@ public class LoginController {
                 if (user.getIsEffective() == 0) {
                     return new JsonResponse(false, "审核未通过,请联系管理员");
                 }
-                Cookie cookie = new Cookie(WebSecurityConfig.TOKEN_NAME, JwtUtils.createToken(userName, String.valueOf(user.getId())));
+                Cookie cookie = new Cookie(WebSecurityConfig.TOKEN_NAME, JwtUtils.createToken(userName,user.getUid(), String.valueOf(user.getId())));
                 cookie.setMaxAge(Constants.LOGIN_TIME_OUT);
                 response.addCookie(cookie);
                 return new JsonResponse(true, "登录成功");

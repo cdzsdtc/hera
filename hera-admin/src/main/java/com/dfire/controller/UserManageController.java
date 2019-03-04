@@ -1,10 +1,12 @@
 package com.dfire.controller;
 
+import com.dfire.common.entity.HeraDepartment;
 import com.dfire.common.entity.HeraFile;
 import com.dfire.common.entity.HeraUser;
 import com.dfire.common.entity.model.JsonResponse;
 import com.dfire.common.entity.model.TableResponse;
 import com.dfire.common.entity.vo.HeraUserVo;
+import com.dfire.common.service.HeraDepartmentService;
 import com.dfire.common.service.HeraFileService;
 import com.dfire.common.service.HeraUserService;
 import com.dfire.common.util.ActionUtil;
@@ -31,9 +33,26 @@ public class UserManageController {
     @Autowired
     private HeraUserService heraUserService;
 
+
+    @Autowired
+    private HeraDepartmentService departmentService;
+
     @Autowired
     @Qualifier("heraFileMemoryService")
     private HeraFileService heraFileService;
+
+
+    @RequestMapping(value = "/department", method = RequestMethod.GET)
+    @ResponseBody
+    public TableResponse<List<HeraDepartment>> department() {
+        List<HeraDepartment> departments = departmentService.getAll();
+
+        if (departments == null) {
+            return new TableResponse<>(-1, "查询异常");
+        }
+        return new TableResponse<>(departments.size(), 0, departments);
+    }
+
 
     @RequestMapping(value = "/initUser", method = RequestMethod.GET)
     @ResponseBody
@@ -76,7 +95,7 @@ public class UserManageController {
 
     @RequestMapping(value = "/operateUser", method = RequestMethod.POST)
     @ResponseBody
-    public JsonResponse operateUser(Integer id, String operateType) {
+    public JsonResponse operateUser(Integer id, String operateType, String uid) {
 
         JsonResponse response = new JsonResponse(false, "更新失败");
         int result;
@@ -100,6 +119,9 @@ public class UserManageController {
                             return new JsonResponse(false, "新增文档失败，请联系管理员");
                         }
                     }
+                    //设置用户组
+                    user.setUid(uid);
+                    heraUserService.update(user);
                 }
                 response.setMessage("审核通过");
                 response.setSuccess(true);

@@ -51,7 +51,7 @@ public class DevelopCenterController extends BaseHeraController {
     @RequestMapping(value = "/init", method = RequestMethod.POST)
     @ResponseBody
     public List<HeraFileTreeNodeVo> initFileTree() {
-        String owner = getOwner();
+        String owner = getDepartment();
         return heraFileService.buildFileTree(owner);
     }
 
@@ -63,7 +63,7 @@ public class DevelopCenterController extends BaseHeraController {
         if (Constants.FILE_ALL_NAME.equals(parentFile.getOwner())) {
             heraFile.setOwner(Constants.FILE_ALL_NAME);
         } else {
-            heraFile.setOwner(getOwner());
+            heraFile.setOwner(getDepartment());
         }
         return heraFileService.insert(heraFile);
     }
@@ -103,7 +103,7 @@ public class DevelopCenterController extends BaseHeraController {
     @RequestMapping(value = "/debug", method = RequestMethod.POST)
     @ResponseBody
     public WebAsyncTask<JsonResponse> debug(@RequestBody HeraFile heraFile) {
-        String owner = getOwner();
+        String owner = getDepartment();
         return new WebAsyncTask<>(10000, () -> {
             Map<String, Object> res = new HashMap<>(2);
             HeraFile file = heraFileService.findById(heraFile.getId());
@@ -154,7 +154,7 @@ public class DevelopCenterController extends BaseHeraController {
     @ResponseBody
     public WebAsyncTask<JsonResponse> debugSelectCode(@RequestBody HeraFile heraFile) {
 
-        String owner = getOwner();
+        String owner = getDepartment();
         return new WebAsyncTask<JsonResponse>(HeraGlobalEnvironment.getRequestTimeout(), () -> {
             Map<String, Object> res = new HashMap<>(2);
             HeraFile file = heraFileService.findById(heraFile.getId());
@@ -252,11 +252,11 @@ public class DevelopCenterController extends BaseHeraController {
     }
 
     private boolean checkPermission(Integer id) {
-        if (HeraGlobalEnvironment.getAdmin().equals(getOwner())) {
+        if (HeraGlobalEnvironment.getAdmin().equals(getDepartment())) {
             return true;
         }
         HeraFile heraFile = heraFileService.findById(id);
-        return heraFile != null && heraFile.getOwner().equals(getOwner());
+        return heraFile != null && heraFile.getOwner().equals(getDepartment());
     }
 
     @RequestMapping(value = "saveScript", method = RequestMethod.POST)

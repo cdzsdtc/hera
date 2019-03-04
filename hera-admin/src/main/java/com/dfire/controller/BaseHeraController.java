@@ -26,7 +26,11 @@ public abstract class BaseHeraController {
     }
 
 
-    protected String getOwner() {
+    protected String getDepartment() {
+        return JwtUtils.getObjectFromToken(WebSecurityConfig.TOKEN_NAME, requestThread.get(), WebSecurityConfig.SESSION_UID);
+    }
+
+    protected String getUser() {
         return JwtUtils.getObjectFromToken(WebSecurityConfig.TOKEN_NAME, requestThread.get(), WebSecurityConfig.SESSION_USERNAME);
     }
 

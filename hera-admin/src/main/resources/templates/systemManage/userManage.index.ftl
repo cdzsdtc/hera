@@ -41,6 +41,21 @@
         <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="refuse">审核拒绝</a>
         <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>
     </script>
+
+    <script type="text/html" id="departmentAlert">
+        <form class="layui-form" action="">
+            <div class="layui-inline">
+                <label class="layui-form-label">用户组</label>
+                <div class="layui-input-inline">
+                    <select id="departmentId" lay-verify="required" lay-search="">
+                        {{# layui.each(d, function(index,item) { }}
+                        <option value="{{item.id}}">{{item.name}}</option>
+                        {{# }); }}
+                    </select>
+                </div>
+            </div>
+        </form>
+    </script>
 <@netCommon.commonScript />
     <script src="${request.contextPath}/js/userManage.js"></script>
 </body>

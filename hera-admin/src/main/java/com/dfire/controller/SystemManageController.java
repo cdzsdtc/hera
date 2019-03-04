@@ -235,7 +235,7 @@ public class SystemManageController extends BaseHeraController {
     }
 
     private boolean checkAdmin() {
-        return getOwner().equals(HeraGlobalEnvironment.getAdmin());
+        return getDepartment().equals(HeraGlobalEnvironment.getAdmin());
     }
 
 

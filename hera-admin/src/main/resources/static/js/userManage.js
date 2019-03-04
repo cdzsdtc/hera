@@ -22,6 +22,7 @@ layui.use(['table', 'laytpl', 'form'], function () {
         , cols: [[ //表头
             {title: '序号', fixed: 'left', align: 'center', type: 'numbers'}
             , {field: 'name', title: '用户', align: 'center', width: 100}
+            , {field: 'uid', title: '用户组', align: 'center', width: 100}
             , {field: 'email', title: '邮箱', align: 'center', width: 180}
             , {field: 'phone', title: '手机号', align: 'center', width: 115}
             , {
@@ -38,7 +39,7 @@ layui.use(['table', 'laytpl', 'form'], function () {
         ]]
     });
 
-
+    let layHtml = null;
     table.on('tool(userTable)', function (obj) {
         switch (obj.event) {
             case 'del':
@@ -54,10 +55,46 @@ layui.use(['table', 'laytpl', 'form'], function () {
                 });
                 break;
             case 'approve' :
-                $.post(base_url + "/userManage/operateUser", {id: obj.data.id, operateType: 2}, function (data) {
-                    layer.msg(data.message);
-                    refreshTable();
+                if (layHtml === null) {
+
+                    $.ajax({
+                        url: base_url + "/userManage/department",
+                        async: false,
+                        type: "get",
+                        success: function (data) {
+                            laytpl($('#departmentAlert')[0].innerHTML).render(data.data, function (html) {
+                                layHtml = html;
+                            });
+                        }
+                    });
+                }
+                layer.open({
+                    type: 1,
+                    title: '请选择用户组',
+                    skin: 'layui-layer-rim', //加上边框
+                    area: ['350px', '400px'], //宽高
+                    content: layHtml,  //调到新增页面
+                    btn: ["确定", "取消"],
+                    success: function () {
+                        form.render();
+                    },
+                    yes: function (index, layero) {
+                        $.post(base_url + "/userManage/operateUser", {
+                            id: obj.data.id,
+                            operateType: 2,
+                            uid: $('#departmentId option:selected').text()
+                        }, function (data) {
+                            layer.msg(data.message);
+                            refreshTable();
+                            layer.close(index);
+                        });
+                    },
+                    btn2: function (index, layero) {
+                        layer.close(index);
+                    }
                 });
+
+
                 break;
 
             case 'refuse':

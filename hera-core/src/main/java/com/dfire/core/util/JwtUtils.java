@@ -35,7 +35,7 @@ public class JwtUtils {
         }
     }
 
-    public static String createToken(String username, String userId) {
+    public static String createToken(String username, String uid,String userId) {
         Map<String, Object> header = new HashMap<>(2);
         header.put("alg", "HS256");
         header.put("typ", "JWT");
@@ -47,6 +47,7 @@ public class JwtUtils {
                 .withClaim("iss", "hera")
                 .withClaim("aud", "2dfire")
                 .withClaim("username", username)
+                .withClaim("uid", uid)
                 .withClaim("userId", userId)
                 .withIssuedAt(now)
                 .withExpiresAt(expireDate)

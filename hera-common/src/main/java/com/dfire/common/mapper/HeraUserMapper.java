@@ -29,7 +29,7 @@ public interface HeraUserMapper {
     @Lang(HeraUpdateLangDriver.class)
     int update(HeraUser heraUser);
 
-    @Select("select id,email,name,phone,is_effective,description,gmt_create,gmt_modified from hera_user")
+    @Select("select id,email,name,uid,phone,is_effective,description,gmt_create,gmt_modified from hera_user")
     @Lang(HeraSelectLangDriver.class)
     List<HeraUser> getAll();
 
@@ -43,7 +43,7 @@ public interface HeraUserMapper {
 
     @Select("SELECT * FROM hera_user WHERE NAME = #{name}")
     @Lang(HeraUpdateLangDriver.class)
-    HeraUser getByName(HeraUser heraUser);
+    HeraUser getByName(String name);
 
     @Select("select * from hera_user where id in (#{list})")
     @Lang(HeraListInLangDriver.class)

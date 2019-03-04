@@ -33,4 +33,6 @@ public class HeraUserVo {
 
     private String description;
 
+    private String uid;
+
 }

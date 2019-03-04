@@ -94,7 +94,7 @@ public class ScheduleCenterController extends BaseHeraController {
     @RequestMapping(value = "/init", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, List<HeraJobTreeNodeVo>> initJobTree() {
-        return heraJobService.buildJobTree(getOwner());
+        return heraJobService.buildJobTree(getDepartment());
     }
 
     @RequestMapping(value = "/getJobMessage", method = RequestMethod.GET)
@@ -254,7 +254,7 @@ public class ScheduleCenterController extends BaseHeraController {
         HeraJob heraJob = heraJobService.findById(heraAction.getJobId());
 
         if (owner == null) {
-            owner = super.getOwner();
+            owner = super.getDepartment();
         }
         if (owner == null) {
             throw new IllegalArgumentException("任务执行人为空");
@@ -389,12 +389,12 @@ public class ScheduleCenterController extends BaseHeraController {
 
         if (isGroup) {
             res = heraGroupService.delete(xId) > 0;
-            MonitorLog.info("{}【删除】组{}成功", getOwner(), xId);
+            MonitorLog.info("{}【删除】组{}成功", getDepartment(), xId);
             return new JsonResponse(res, res ? "删除成功" : "系统异常,请联系管理员");
 
         }
         res = heraJobService.delete(xId) > 0;
-        MonitorLog.info("{}【删除】任务{}成功", getOwner(), xId);
+        MonitorLog.info("{}【删除】任务{}成功", getDepartment(), xId);
         updateJobToMaster(res, xId);
         return new JsonResponse(res, res ? "删除成功" : "系统异常,请联系管理员");
     }
@@ -407,7 +407,7 @@ public class ScheduleCenterController extends BaseHeraController {
             return new JsonResponse(false, ERROR_MSG);
         }
         heraJob.setHostGroupId(HeraGlobalEnvironment.defaultWorkerGroup);
-        heraJob.setOwner(getOwner());
+        heraJob.setOwner(getDepartment());
         heraJob.setScheduleType(JobScheduleTypeEnum.Independent.getType());
         int insert = heraJobService.insert(heraJob);
         if (insert > 0) {
@@ -423,7 +423,7 @@ public class ScheduleCenterController extends BaseHeraController {
     public JsonResponse updateMonitor(Integer id) {
         boolean res = heraJobMonitorService.addMonitor(getOwnerId(), id);
         if (res) {
-            MonitorLog.info("{}【关注】任务{}成功", getOwner(), id);
+            MonitorLog.info("{}【关注】任务{}成功", getDepartment(), id);
             return new JsonResponse(true, "关注成功");
         } else {
             return new JsonResponse(false, "系统异常，请联系管理员");
@@ -436,7 +436,7 @@ public class ScheduleCenterController extends BaseHeraController {
     public JsonResponse deleteMonitor(Integer id) {
         boolean res = heraJobMonitorService.removeMonitor(getOwnerId(), id);
         if (res) {
-            MonitorLog.info("{}【取关】任务{}成功", getOwner(), id);
+            MonitorLog.info("{}【取关】任务{}成功", getDepartment(), id);
             return new JsonResponse(true, "取关成功");
         } else {
             return new JsonResponse(false, "系统异常，请联系管理员");
@@ -454,12 +454,12 @@ public class ScheduleCenterController extends BaseHeraController {
         Date date = new Date();
         heraGroup.setGmtModified(date);
         heraGroup.setGmtCreate(date);
-        heraGroup.setOwner(getOwner());
+        heraGroup.setOwner(getDepartment());
         heraGroup.setExisted(1);
 
         int insert = heraGroupService.insert(heraGroup);
         if (insert > 0) {
-            MonitorLog.info("{}【添加】组{}成功", getOwner(), heraGroup.getId());
+            MonitorLog.info("{}【添加】组{}成功", getDepartment(), heraGroup.getId());
             return new JsonResponse(true, String.valueOf(heraGroup.getId()));
         } else {
             return new JsonResponse(false, String.valueOf(-1));
@@ -544,7 +544,7 @@ public class ScheduleCenterController extends BaseHeraController {
     @RequestMapping(value = "/generateAllVersion", method = RequestMethod.GET)
     @ResponseBody
     public WebAsyncTask<String> generateAllVersion() {
-        if (!isAdmin(getOwner())) {
+        if (!isAdmin(getDepartment())) {
             return new WebAsyncTask<>(() -> ERROR_MSG);
         }
         WebAsyncTask<String> asyncTask = new WebAsyncTask<>(HeraGlobalEnvironment.getRequestTimeout(), () ->
@@ -650,7 +650,7 @@ public class ScheduleCenterController extends BaseHeraController {
     }
 
     private boolean hasPermission(Integer id, String type) {
-        String owner = getOwner();
+        String owner = getDepartment();
         if (owner == null || id == null || type == null) {
             return false;
         }

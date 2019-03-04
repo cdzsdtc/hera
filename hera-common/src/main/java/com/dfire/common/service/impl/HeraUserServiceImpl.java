@@ -52,8 +52,7 @@ public class HeraUserServiceImpl implements HeraUserService {
 
     @Override
     public HeraUser findByName(String name) {
-        HeraUser heraUser = HeraUser.builder().name(name).build();
-        return heraUserMapper.getByName(heraUser);
+        return heraUserMapper.getByName(name);
     }
 
     @Override
