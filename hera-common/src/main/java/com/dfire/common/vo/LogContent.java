@@ -44,7 +44,7 @@ public class LogContent {
                     || log.contains("command not found")
                     || log.contains("Permission denied")) {
                 content.append(CONSOLE).append("<font style=\"color:red\">")
-                        .append(log).append("</font>")
+                        .append(log).append(" </font>")
                         .append(Constants.LOG_SPLIT);
             } else {
                 content.append(CONSOLE).append(log).append(Constants.LOG_SPLIT);

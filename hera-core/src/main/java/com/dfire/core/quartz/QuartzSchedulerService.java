@@ -32,12 +32,12 @@ public class QuartzSchedulerService {
     public Properties setQuartzProperties() throws IOException {
         HeraLog.info("start init quartz properties");
         Properties prop = new Properties();
-        prop.put("org.quartz.scheduler.instanceName", "heraQuartzScheduler");
+        prop.put("org.quartz.scheduler.instanceName", "heraQuartzSchedulerPool");
         prop.put("org.quartz.scheduler.rmi.export", "false");
         prop.put("org.quartz.scheduler.rmi.proxy", "false");
         prop.put("org.quartz.scheduler.wrapJobExecutionInUserTransaction", "false");
         prop.put("org.quartz.threadPool.class", "org.quartz.simpl.SimpleThreadPool");
-        prop.put("org.quartz.threadPool.threadCount", "40");
+        prop.put("org.quartz.threadPool.threadCount", Constants.AVAILABLE_CORES);
         prop.put("org.quartz.threadPool.threadPriority", "5");
         prop.put("org.quartz.threadPool.threadsInheritContextClassLoaderOfInitializingThread", "true");
         prop.put("org.quartz.jobStore.misfireThreshold", "60000");

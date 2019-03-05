@@ -90,7 +90,7 @@ public interface HeraJobHistoryMapper {
     List<HeraJobHistory> selectByPage(PageHelper pageHelper);
 
 
-    @Select("select job_id,start_time,end_time,status from hera_action_history where left(start_time,10) >= CURDATE()")
+    @Select("select job_id,start_time,end_time,status from hera_action_history where action_id >= CURRENT_DATE () * 10000000000")
     List<HeraJobHistory> findTodayJobHistory();
 
 }

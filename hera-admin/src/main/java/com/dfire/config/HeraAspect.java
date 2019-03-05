@@ -1,6 +1,6 @@
 package com.dfire.config;
 
-import com.dfire.logs.HeraLog;
+import com.dfire.logs.ErrorLog;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -28,8 +28,8 @@ public class HeraAspect {
         Long start = System.currentTimeMillis();
         Object res = joinPoint.proceed();
         Long end = System.currentTimeMillis();
-        if (start - end >= 10 * 1000L) {
-            HeraLog.info("方法名:{},参数:{},耗时:{}ms", joinPoint.getSignature().getName(), Arrays.asList(joinPoint.getArgs()), end - start);
+        if (start - end >= 10000L) {
+            ErrorLog.error("方法名:{},参数:{},耗时:{}ms", joinPoint.getSignature().getName(), Arrays.asList(joinPoint.getArgs()), end - start);
         }
         return res;
     }

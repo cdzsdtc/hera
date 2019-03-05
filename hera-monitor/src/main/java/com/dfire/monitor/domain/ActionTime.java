@@ -1,5 +1,6 @@
 package com.dfire.monitor.domain;
 
+import com.dfire.monitor.config.Alarm;
 import lombok.Data;
 
 /**
